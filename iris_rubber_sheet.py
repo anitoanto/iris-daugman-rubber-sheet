@@ -28,7 +28,9 @@ def generate_rubber_sheet_model(img, save_filename):
     im.save(save_filename)
 
 
-def daugman_method(image_path, is_gray=True, high_contrast=False):
+def daugman_method(
+    image_path, localized, rubber_sheet, is_gray=True, high_contrast=False
+):
     img_opened = np.asarray(Image.open(image_path))
     iris_localized = img_opened.copy()
 
@@ -52,7 +54,7 @@ def daugman_method(image_path, is_gray=True, high_contrast=False):
     cv2.circle(iris_localized, iris_coordinates, r, (255, 0, 0), thickness=1)
     cv2.circle(iris_localized, iris_coordinates, 4, (255, 255, 0), thickness=1)
     im = Image.fromarray(iris_localized)
-    im.save("iris_localized.jpg")
+    im.save(localized)
 
     iris_image = img_opened[y - h : y + h, x - w : x + w]
     iris = cv2.resize(iris_image, (iris_image.shape[1] * 2, iris_image.shape[0] * 2))
@@ -60,8 +62,25 @@ def daugman_method(image_path, is_gray=True, high_contrast=False):
     im = Image.fromarray(iris)
     im.save("iris.jpg")
 
-    generate_rubber_sheet_model(iris_image, "iris_rubber_sheet.jpg")
+    generate_rubber_sheet_model(iris_image, rubber_sheet)
 
 
 input_image = sys.argv[1]
-daugman_method(input_image, is_gray=True, high_contrast=False)
+localized = sys.argv[2]
+rubber_sheet = sys.argv[3]
+
+# daugman_method(
+#     input_image,
+#     "iris_localized.jpg",
+#     "iris_rubber_sheet.jpg",
+#     is_gray=True,
+#     high_contrast=False,
+# )
+
+daugman_method(
+    input_image,
+    localized,
+    rubber_sheet,
+    is_gray=True,
+    high_contrast=False,
+)
