@@ -76,7 +76,7 @@ def process_img(
     image_roi, rr, success = processing(filename, 50)
 
     if success:
-        if !keep_reflection:
+        if not keep_reflection:
             image_roi = remove_reflection(image_roi)
 
         save_img(image_roi, iris_save_filename)
