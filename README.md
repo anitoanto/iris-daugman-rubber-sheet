@@ -5,5 +5,5 @@ Detects the iris region from the input image, and saves as cartisian image (rubb
 ## Run
 
 ```
-python iris_rubber_sheet.py sample.jpg iris.jpg rs.jpg
+python iris_rubber_sheet.py sample.jpg iris.jpg result.jpg
 ```
