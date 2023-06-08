@@ -27,7 +27,7 @@ def generate_rubber_sheet_model(img, save_filename):
     save_img(cartisian_image, save_filename)
 
 
-def recflection_remove(img):
+def remove_reflection(img):
     ret, mask = cv2.threshold(img, 150, 255, cv2.THRESH_BINARY)
     kernel = np.ones((5, 5), np.uint8)
     dilation = cv2.dilate(mask, kernel, iterations=1)
@@ -66,21 +66,18 @@ def processing(image_path, r):
         image[:] = 255
         print(f"{image_path} -> No circles (iris) found.")
         success = False
-        error_txt = open("./out/error_log.txt", 'a')
-        error_txt.write(image_path + "\n")
-        error_txt.close()
         return image, image.shape[0], success
 
 
 def process_img(
-    filename, iris_save_filename, rs_save_filename, remove_reflection=True
+    filename, iris_save_filename, rs_save_filename, keep_reflection=False
 ):
 
     image_roi, rr, success = processing(filename, 50)
 
     if success:
-        if remove_reflection:
-            image_roi = recflection_remove(image_roi)
+        if !keep_reflection:
+            image_roi = remove_reflection(image_roi)
 
         save_img(image_roi, iris_save_filename)
         generate_rubber_sheet_model(image_roi, rs_save_filename)
